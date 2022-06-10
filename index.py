@@ -27,14 +27,14 @@ def api_call(URL):
 
 parsedResponse = api_call(url + urlTime)
 
-for document in parsedResponse["data"]:
+for index, document in enumerate(parsedResponse["data"]):
     for field in document["fields"]:
         try:
             imageUrl = field["value"]["scannedDocumentValue"][0]["url"]
             responseImage = requests.get(imageUrl)
-            open('test.jpg', 'wb').write(responseImage.content)
-            test_1 = Image.open(r'test.jpg')
+            open('output\document_' + str(index) + '.jpg', 'wb').write(responseImage.content)
+            test_1 = Image.open(r'output\document_' + str(index) + '.jpg')
             im_1 = test_1.convert('RGB')
-            im_1.save(r'converted_test.pdf')
+            im_1.save(r'output\processed\pdf_' + str(index) + '.pdf')
         except KeyError:
             print("")
