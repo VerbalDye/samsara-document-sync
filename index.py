@@ -22,12 +22,11 @@ urlTime = "endTime=" + endTime.strftime('%Y-%m-%dT04:00:00Z') + "&startTime=" + 
 
 def processDocuments(documentId, endCursor):
     if endCursor is not None:
-        URL = url + urlTime + "&documentTypeId=" + documentId + "&endCursor=" + endCursor
+        URL = url + urlTime + "&documentTypeId=" + documentId + "&after=" + endCursor
     else:
         URL = url + urlTime + "&documentTypeId=" + documentId
 
     response = requests.get(URL, headers=headers)
-
     parsedResponse = json.loads(response.text)
 
     for index, document in enumerate(parsedResponse["data"]):
@@ -47,5 +46,5 @@ def processDocuments(documentId, endCursor):
         processDocuments(documentId, parsedResponse["pagination"]["endCursor"])
 
 processDocuments(billOfLadingId, None)
-# processDocuments(sendPaperworkId)
+processDocuments(sendPaperworkId, None)
 # processDocuments(departDeliveryId)
